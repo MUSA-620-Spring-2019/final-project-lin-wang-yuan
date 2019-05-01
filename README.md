@@ -12,7 +12,7 @@ visualization).
 
 Written proposal due date: **Wednesday, April 24th** (or earlier)
 
-Project due date: **Monday, May 13th**
+Project due date: **5pm on Monday, May 13th**
 
 **Final projects must receive prior approval in the form of a written proposal.**
 
