@@ -20,9 +20,17 @@ Project due date: **Monday, May 13th**
 
 The final deliverable **must include all three of the below items**:
 
-- a web-based data visualization with a URL (public or private)
-- a document describing the project, the results, and the technical methods used in each step (collection, analysis and visualization)
-- all code/spreadsheets/datasets used
+1. a web-based data visualization with a URL (public or private)
+1. a document describing the project, the results, and the technical methods used in each step (collection, analysis and visualization)
+1. all code/spreadsheets/datasets used
+
+The materials for steps #2 an #3 above should be submitted to your own specific GitHub repository, which can be created using the link below:
+
+https://classroom.github.com/g/b0HnnsVF
+
+### Important
+- The code for your web-based visualization (#1) can be either in the same repository or in a separate **public** repository. If it is in its own repository, be sure to link to it from the main, submission repository. 
+- Be sure to include the names of everyone who worked on the final project somewhere in the README, etc! 
 
 ## Guidelines
 
