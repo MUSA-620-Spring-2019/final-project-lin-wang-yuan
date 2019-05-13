@@ -1,61 +1,50 @@
-# Final Project
+# Exploring Las Vegas Restaurants from the Yelp Dataset
+Lufeng Lin, Zixuan Wang, Jonathan Yuan
 
-The final project is to replicate the pipeline approach on a dataset (or
-datasets) of your choosing.
+MUSA 620 Data Wrangling
+May 13, 2019
 
-The final deliverable will be a web-based data visualization
-and accompanying description including a summary of the results and the methods
-used in each step of the process (collection, analysis and
-visualization).
+### ABSTRACT
 
-## Due dates
+Yelp is a crowd-sourced business directory service, which compiles and publishes location information, user reviews, and photos on restaurants, shops, offices, and other businesses. As part of the Yelp Dataset Challenge, Yelp has published a subset of its dataset for students and researchers to analyze and explore their data.
 
-Written proposal due date: **Wednesday, April 24th** (or earlier)
+Our final project is a dashboard which may be used to examine cross-sections of Las Vegas restaurants. Written in Python and using using Pyviz’s `panel` library, it allows users to filter (with `param`) these restaurants and their user reviews and dynamically create visualizations backed by `altair` and Leaflet’s `folium`. Users can select the type and category of Las Vegas restaurants to analyze, and the dashboard will display a text summary, as well as:
+1. a heatmap of their locations,
+1. a bivariate bar plot showing the number of restaurants in each category and the number with each rating, and 
+1. a histogram of the usefulness of Yelp reviews.
 
-Project due date: **5pm on Monday, May 13th**
+### THE DATA
 
-**Final projects must receive prior approval in the form of a written proposal.**
+We used two primary components of the Yelp dataset, one of which has 1M+ rows.
 
-## Deliverable
+First, the provided `business.json` contains 192,609 rows, one for each business included in the dataset. This contains business information, such as name, location, categories, number of reviews, and average rating (out of five stars), as well as a 22-character `business_id`.
 
-The final deliverable **must include all three of the below items**:
+Second, `review.json` contains 5,261,668 user reviews, each associated with a `business_id`. The text value of each review is included, as well as other users' feedback for these reviews, or a count of the number of "funny", "cool", and "useful" responses.
 
-1. a web-based data visualization with a URL (public or private)
-1. a document describing the project, the results, and the technical methods used in each step (collection, analysis and visualization)
-1. all code/spreadsheets/datasets used
+### THE CODE
 
-The materials for steps #2 an #3 above should be submitted to your own specific GitHub repository, which can be created using the link below:
+#### Filtering using `param` callbacks
 
-https://classroom.github.com/g/b0HnnsVF
+One of the primary features of the dashboard is the ability to examine only a selection of Las Vegas restaurants in our selected categories. With the `param` library, a new object of class `ourapp()` is created containing two filters which may be used to select restaurants and any visualizations that depend on them.
 
-### Important
-- The code for your web-based visualization (#1) can be either in the same repository or in a separate **public** repository. If it is in its own repository, be sure to link to it from the main, submission repository. 
-- Be sure to include the names of everyone who worked on the final project somewhere in the README, etc! 
+On a `param.integer()` slider titled "Star", users may select restaurants that have between 0 and 5 stars in integer increments. (Partial star ratings are rounded.) And with a `param.ObjectSelector()` drop-down named "Foodselector", the specific category of restaurant ("Burgers", "Mexican", "Chinese", "Italian", "Pizza", etc.) may be chosen.
 
-## Guidelines
+Because the `categories` column is in `string` format that sometimes contains multiple categories, some data frame operations are necessary to separate out the categories. A new column was created containing only one of the categories in the drop-down, and a new dataset was created ignoring all restaurants not having those categories. One issue with this approach is that restaurants with two of those categories (e.g. "Italian" and "Pizza"), only the result of the last operation is kept.
 
-The project is open-ended. The topic and technologies used are up to you. However, the it must satisfy **at least two of the items below**:
+Dataframe operations on the output of the filter allows the compilation of a text summary, e.g. for 2-star Chinese restaurants: "There are 20 restaurant(s) and 1759 reviews, including 1687 useful reviews, 665 cool reviews, and 835 funny reviews." Each of the below visualizations is updated according to the selection of filters and is implemented as callback functions within the `ourapp()` object.
 
-- Data is collected through a means more sophisticated than downloading (e.g. scraping, API).
-- At least one of the datasets contains more than 1,000,000 rows.
-- It combines data collected from 3 or more different sources.
-- The analysis of the data is reasonably complex, involving multiple steps (geospatial joins/operations, data shaping, data frame operations, etc).
-- You use one of the analysis techniques for urban street networks (e.g., osmnx, pandana) or clustering (e.g., scikit-learn)
-- The webpage includes a significant interactive component (cross-filtering, interactive widgets, etc)
+#### 1. Heatmap
 
-As a rough guideline, you should shoot for something that is 3-4 times as involved as the required assignments.
+The Python wrapper of mapping tool Leaflet.js is called `folium`, which works with the Leaflet.heat plugin. This library and plug-in was used to generate a dynamic heatmap showing where selected restaurants tend to be clustered. 2-star Chinese restaurants, for example, appear throughout the city, but are especially clustered along a section of Las Vegas Boulevard known as "the Strip".
 
-## Group projects
+#### 2. Barplot by category and rating
 
-Group projects are permitted. You are also permitted to combine this assignment with one you are working on for another course. But keep in mind that if you choose either of these options, the expectations for the project's scope will be adjusted accordingly.
+This `altair` stacked bar plot shows, for each category, the number of restaurants in each rating. The `altair` package is used to aggregate, for each bar, the number of Las Vegas restaurants in each category, and, for each color, the number of restaurants that have each rating in half-star increments. 
 
-If you combine this assignment with one from another course, the portion that you are submitting for this final project must be a clearly defined addition to the original project. In such a case, you will be graded only on the portion submitted for this course, not on the entire project.
+#### 3. Histogram of "useful" feedback per restaurant
 
-## Grading
+This `altair` histogram shows the distribution of the amount of "useful" feedback for the reviews of restuarant. The value for each restaurant is the sum of the "useful" count of all of its reviews. This may be interpreted as the overall usefulness of reviews for each Yelp listing.
 
-The final project is worth 40% of the final grade and will be graded on four criteria:
+In order to prepare this data, a join was performed between the `business.json` and `review.json` datasets. Then, grouping by each business, a sum of all counts of "useful" responses is created. If a restaurant has 5 reviews, and each review has 3 "useful" responses, The restaurant will have a "useful" count of 15.
 
-- **Concept**: Is it sufficiently complex/challenging/sophisticated? Is the final product useful/interesting/creative?
-- **Technical implementation**: Was it well thought out? Was each step done correctly? Does it work as described? Is it consistent with the proposal?
-- **Visualization**: How well does the data visualization serve its purpose? Does it tell a clear story? Are the colors/layout/titles well-chosen?
-- **Writeup**: Is all of the above explained clearly? The writeup should be a multi-page document that explains in depth all aspects of the project's implementation as well as the final results.
+Most Yelp listings of 2-star Chinese restaurants have a "useful" count less than 100. Reviews for one particular Sandwich restaurant, however, have over 11000 "useful" responses.
