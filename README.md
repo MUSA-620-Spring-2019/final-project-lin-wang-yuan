@@ -4,6 +4,9 @@ Lufeng Lin, Zixuan Wang, Jonathan Yuan
 MUSA 620 Data Wrangling
 May 13, 2019
 
+Launch the app here:
+[![](https://img.shields.io/badge/launch-binder%20app-F5A252.svg)](https://mybinder.org/v2/gh/MUSA-620-Spring-2019/final-project-lin-wang-yuan/master?urlpath=final.ipynb)
+
 ### ABSTRACT
 
 Yelp is a crowd-sourced business directory service, which compiles and publishes location information, user reviews, and photos on restaurants, shops, offices, and other businesses. As part of the Yelp Dataset Challenge, Yelp has published a subset of its dataset for students and researchers to analyze and explore their data.
