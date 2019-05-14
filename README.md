@@ -41,9 +41,9 @@ The Python wrapper of mapping tool Leaflet.js is called `folium`, which works wi
 
 This `altair` stacked bar plot shows, for each category, the number of restaurants in each rating. The `altair` package is used to aggregate, for each bar, the number of Las Vegas restaurants in each category, and, for each color, the number of restaurants that have each rating in half-star increments. 
 
-#### 3. Histogram of "useful" feedback per restaurant
+#### 3. Histogram of "useful", "funny", and "cool" feedback per restaurant
 
-This `altair` histogram shows the distribution of the amount of "useful" feedback for the reviews of restuarant. The value for each restaurant is the sum of the "useful" count of all of its reviews. This may be interpreted as the overall usefulness of reviews for each Yelp listing.
+These `altair` histogram (actually a bar plot; `altair` histograms would not appear with `panel`) shows the distribution of the amount of "useful" feedback for the reviews of restuarant. The value for each restaurant is the sum of the "useful", "funny", or "cool" count of all of its reviews. This may be interpreted as the overall usefulness of reviews for each Yelp listing.
 
 In order to prepare this data, a join was performed between the `business.json` and `review.json` datasets. Then, grouping by each business, a sum of all counts of "useful" responses is created. If a restaurant has 5 reviews, and each review has 3 "useful" responses, The restaurant will have a "useful" count of 15.
 
